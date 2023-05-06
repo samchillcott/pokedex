@@ -19,11 +19,11 @@ const Home = () => {
     if (localStorageCheck) {
       setAllPokemon(JSON.parse(localStorageCheck))
     } else {
-      const api = await fetch(`https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&number=4`)
+      const api = await fetch("https://pokeapi.co/api/v2/pokemon?limit=50&offset=0")
       const data = await api.json()
-      console.log(data);
-      localStorage.setItem("allPokemon", JSON.stringify(data))
-      setAllPokemon(data);
+      console.log(data.results);
+      localStorage.setItem("allPokemon", JSON.stringify(data.results))
+      setAllPokemon(data.results);
     }
   }
 
@@ -46,8 +46,8 @@ const Home = () => {
             <Card>
               <Link to={ "/pokemon/" + pokemon.name }>
                 <p>{ pokemon.name }</p>
-                <img src={ pokemon.sprites.front_default } alt={ pokemon.name } />
-                <Gradient />
+                {/* <img src={ pokemon.sprites.front_default } alt={ pokemon.name } /> */}
+                {/* <Gradient /> */}
               </Link>
             </Card>
             // </SplideSlide>
