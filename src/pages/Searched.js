@@ -6,11 +6,13 @@ import { Link, useParams } from 'react-router-dom'
 const Searched = () => {
   const [searchedPokemon, setSearchedPokemon] = useState([])
   let params = useParams()
+  console.log("🚀 ~ file: Searched.js:9 ~ Searched ~ params:", params)
 
-  const getSearched = async (name) => {
-    const data = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_SPOONACULAR_API_KEY}&query=${name}&number=4`)
-    const recipes = await data.json();
-    setSearchedPokemon(recipes.results || [])
+  const getSearched = async () => {
+    const data = await fetch(`https://pokeapi.co/api/v2/pokemon/?name=${params.name}*`)
+    const pokemons = await data.json();
+    console.log("🚀 ~ file: Searched.js:14 ~ getSearched ~ pokemons:", pokemons)
+    setSearchedPokemon(pokemons.results || [])
   }
 
   useEffect(() => {
