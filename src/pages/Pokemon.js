@@ -4,20 +4,32 @@ import styled from 'styled-components'
 
 const Pokemon = () => {
   let params = useParams()
-  console.log("🚀 ~ file: Pokemon.js:7 ~ Pokemon ~ params:", params.name)
-  const [pokemon, setPokemon] = useState({})
+  const [pokemon, setPokemon] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
 
   const fetchDetails = async () => {
-    console.log("fetch called");
-    const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${params.name}`)
-    const detailData = await data.json()
-    console.log("🚀 ~ file: Pokemon.js:12 ~ fetchDetails ~ detailData:", detailData)
-    setPokemon(detailData)
+    setLoading(true)
+    try {
+      const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${params.name}`)
+      // throw new Error("error")
+      const detailData = await data.json()
+      setPokemon(detailData)
+      setLoading(false)
+    } catch (error) {
+      setErrorMessage(error.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
     fetchDetails()
   }, [params.name])
+
+  if (loading)return <p>loading..</p>
+  if (errorMessage)return <p>error..</p>
+  if (!pokemon)return <p>No Pokemon found</p>
 
   return (
     <DetailWrapper>
@@ -25,9 +37,8 @@ const Pokemon = () => {
         <h2>{ pokemon.name }</h2>
         <p>{ pokemon.weight }</p>
         <p>{ pokemon.height }</p>
-        {/* <p>{ pokemon.abilities[0].ability.name }</p> */}
-        { pokemon.image && <img src={ pokemon.image } alt="" /> }
-        {/* <img src={ pokemon.sprites.front_default } alt="" /> */}
+        {/* <p>{ pokemon.abilities[0].ability.name }</p> */ }
+        <img src={ pokemon.sprites.front_default } alt="" />
       </div>
       {/* <Info >
         <Button
