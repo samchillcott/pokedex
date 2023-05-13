@@ -1,20 +1,25 @@
 import { BrowserRouter, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import Pages from './pages/Pages';
 import Search from './components/Search';
 
 function App() {
+  const queryClient = new QueryClient()
+
   return (
     <div className="App">
-      <BrowserRouter>
-        <Nav>
-          {/* <GiKnifeFork /> */}
-          <Logo to={ "/" }>Pokedex</Logo>
-        </Nav>
-        <Search />
-        <Pages />
-      </BrowserRouter>
+      <QueryClientProvider client={ queryClient }>
+        <BrowserRouter>
+          <Nav>
+            {/* <GiKnifeFork /> */ }
+            <Logo to={ "/" }>Pokedex</Logo>
+          </Nav>
+          <Search />
+          <Pages />
+        </BrowserRouter>
+      </QueryClientProvider>
     </div>
   );
 }
