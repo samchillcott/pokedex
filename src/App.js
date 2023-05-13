@@ -19,6 +19,7 @@ function App() {
           <Search />
           <Pages />
         </BrowserRouter>
+        <ReactQueryDevtools initialIsOpen={ false } />
       </QueryClientProvider>
     </div>
   );
