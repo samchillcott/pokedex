@@ -1,46 +1,38 @@
-import React, { useEffect, useState } from 'react'
-
-import { useParams } from 'react-router-dom'
+import axios from 'axios'
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 
 const Pokemon = () => {
   let params = useParams()
-  const [pokemon, setPokemon] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState("")
+  console.log(params.name);
 
-  const fetchDetails = async () => {
-    setLoading(true)
+  const fetchPokemon = async () => {
     try {
-      const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${params.name}`)
-      // throw new Error("error")
-      const detailData = await data.json()
-      setPokemon(detailData)
-      setLoading(false)
+      const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${params.name}`)
+      return response.data
     } catch (error) {
-      setErrorMessage(error.message)
-    } finally {
-      setLoading(false)
+      console.log(error);
     }
   }
 
-  useEffect(() => {
-    fetchDetails()
-  }, [params.name])
-
-  if (loading) return <p>loading..</p>
-  if (errorMessage) return <p>error..</p>
-  if (!pokemon) return <p>No Pokemon found</p>
+  const pokemon = useQuery({ queryKey: ['pokemon'], queryFn: fetchPokemon })
 
   return (
     <DetailWrapper>
-      <div className="">
-        <h2>{ pokemon.name }</h2>
-        <p>{ pokemon.weight }</p>
-        <p>{ pokemon.height }</p>
-        {/* <p>{ pokemon.abilities[0].ability.name }</p> */ }
-        <img src={ pokemon.sprites.front_default } alt="" />
-      </div>
+      { pokemon.isLoading && <p>Loading Pokemon...</p> }
+      { pokemon.isError && <p>Could not find Pokemon</p> }
+      { pokemon.isSuccess && (
+        <>
+          <div className="">
+            <h2>{ pokemon.data.name }</h2>
+            <p>Height: { pokemon.data.weight }</p>
+            <p>Weight: { pokemon.data.height }</p>
+            <p>Abilities: { pokemon.data.abilities[0].ability.name }</p>
+            <img src={ pokemon.data.sprites.front_default } alt="" />
+          </div>
+        </>
+      ) }
     </DetailWrapper>
   )
 }
