@@ -11,5 +11,5 @@ const fetchPokemon = async (params) => {
 }
 
 export default function usePokemon(params) {
-  return useQuery({ queryKey: ['pokemon'], queryFn: fetchPokemon(params) })
+  return useQuery({ queryKey: ['pokemon'], queryFn: () => fetchPokemon(params) })
 }
