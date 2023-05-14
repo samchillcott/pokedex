@@ -1,22 +1,11 @@
-import axios from 'axios'
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+
+import usePokemon from '../hooks/usePokemon'
 
 const Pokemon = () => {
   let params = useParams()
-  console.log(params.name);
-
-  const fetchPokemon = async () => {
-    try {
-      const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${params.name}`)
-      return response.data
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const pokemon = useQuery({ queryKey: ['pokemon'], queryFn: fetchPokemon })
+  const pokemon = usePokemon(params)
 
   return (
     <DetailWrapper>
