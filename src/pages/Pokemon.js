@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 
 import usePokemon from '../hooks/usePokemon'
+import { capitalizeFirstLetter } from '../helpers/helpers'
 
 const Pokemon = () => {
   let params = useParams()
@@ -14,7 +15,7 @@ const Pokemon = () => {
       { pokemon.isSuccess && (
         <>
           <div className="">
-            <h2>{ pokemon.data.name }</h2>
+            <h2>{ capitalizeFirstLetter(pokemon.data.name) }</h2>
             <p>Height: { pokemon.data.weight }</p>
             <p>Weight: { pokemon.data.height }</p>
             <p>Abilities: { pokemon.data.abilities[0].ability.name }</p>
