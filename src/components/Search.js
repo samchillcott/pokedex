@@ -22,6 +22,7 @@ const Search = () => {
           type="text"
           onChange={ (e) => setInput(e.target.value) }
           value={ input }
+          placeholder='Type Pokemon name..'
         />
       </div>
     </FormStyle>
