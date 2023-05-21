@@ -1,47 +1,48 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import { capitalizeFirstLetter } from '../helpers/helpers';
+import useAllPokemon from '../hooks/useAllPokemon';
 
 const Home = () => {
-  useEffect(() => {
-    getAllPokemon();
-  }, [])
 
-  const [allPokemon, setAllPokemon] = useState([])
+  const allPokemon = useAllPokemon()
+  console.log("🚀 ~ file: Home.js:17 ~ Home ~ allPokemon:", allPokemon)
 
-  const getAllPokemon = async () => {
+  // const getAllPokemon = async () => {
 
-    const localStorageCheck = localStorage.getItem("allPokemon");
+  //   const localStorageCheck = localStorage.getItem("allPokemon");
 
-    if (localStorageCheck) {
-      setAllPokemon(JSON.parse(localStorageCheck))
-    } else {
-      const api = await fetch("https://pokeapi.co/api/v2/pokemon?limit=50&offset=0")
-      const data = await api.json()
-      console.log(data.results);
-      localStorage.setItem("allPokemon", JSON.stringify(data.results))
-      setAllPokemon(data.results);
-    }
-  }
+  //   if (localStorageCheck) {
+  //     // grab from local storage and set to state
+  //     allPokemon = (JSON.parse(localStorageCheck))
+  //   } else {
+  //     // make call and set response to local storage
+
+  //     localStorage.setItem("allPokemon", JSON.stringify(data.results))
+  //     setAllPokemon(data.results);
+  //   }
+  // }
 
   return (
     <div>
       <Wrapper>
         <h3>All Pokemon</h3>
-        { allPokemon.map((pokemon) => {
-          return (
-            <Card>
-              <Link to={ "/pokemon/" + pokemon.name }>
-                <p>{ capitalizeFirstLetter(pokemon.name) }</p>
-                {/* <img src={ pokemon.sprites.front_default } alt={ pokemon.name } /> */}
-                {/* <Gradient /> */}
-              </Link>
-            </Card>
-          )
-        }) }
+        { allPokemon.isLoading && <p>Loading Pokemon...</p> }
+        { allPokemon.isError && <p>Could not find Pokemon</p> }
+        { allPokemon.isSuccess &&
+          allPokemon.data.map((pokemon) => {
+            return (
+              <Card>
+                <Link to={ "/pokemon/" + pokemon.name }>
+                  <p>{ capitalizeFirstLetter(pokemon.name) }</p>
+                  <Gradient />
+                </Link>
+              </Card>
+            )
+          }) }
       </Wrapper>
     </div>
   )
