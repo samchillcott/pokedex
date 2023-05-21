@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-// import '@splidejs/react-splide/css';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+
 import { capitalizeFirstLetter } from '../helpers/helpers';
-// import { Splide, SplideSlide } from "@splidejs/react-splide"
 
 const Home = () => {
   useEffect(() => {
@@ -32,18 +31,8 @@ const Home = () => {
     <div>
       <Wrapper>
         <h3>All Pokemon</h3>
-        {/* <Splide
-          options={ {
-            perPage: 4,
-            arrows: false,
-            pagination: false,
-            drag: 'free',
-            gap: '5rem'
-          } }
-        > */}
         { allPokemon.map((pokemon) => {
           return (
-            // <SplideSlide key={ recipe.id }>
             <Card>
               <Link to={ "/pokemon/" + pokemon.name }>
                 <p>{ capitalizeFirstLetter(pokemon.name) }</p>
@@ -51,10 +40,8 @@ const Home = () => {
                 {/* <Gradient /> */}
               </Link>
             </Card>
-            // </SplideSlide>
           )
         }) }
-        {/* </Splide> */ }
       </Wrapper>
     </div>
   )
