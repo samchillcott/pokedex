@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import Pages from './pages/Pages';
 import Search from './components/Search';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactComponent as PokemonSVG } from './assets/pokemon-23.svg';
+
 
 function App() {
   const queryClient = new QueryClient()
@@ -14,7 +16,7 @@ function App() {
       <QueryClientProvider client={ queryClient }>
         <BrowserRouter>
           <Nav>
-            {/* <GiKnifeFork /> */ }
+            <PokemonSVG style={{height: '50px', width: '100px'}}/>
             <Logo to={ "/" }>Pokedex</Logo>
           </Nav>
           <Search />
